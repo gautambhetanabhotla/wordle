@@ -1,6 +1,9 @@
 #include "wordle.h"
 
 int main() {
-	print("hello world\n", yellow);
+	char* answer = getWordFromDictionary();
+	printf("%s\n", answer);
+	playGame(answer);
+	free(answer);
 	return 0;
 }
