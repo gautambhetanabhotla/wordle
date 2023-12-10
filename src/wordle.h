@@ -14,6 +14,7 @@ void capitalise(char* s);
 char* getWordFromDictionary();
 bool isInWord(char a, char* answer);
 bool correctGuess(char* guess, char* answer);
+void clearPreviousLine();
 void playGame(char* answer);
 
 #endif

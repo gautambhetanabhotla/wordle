@@ -38,8 +38,7 @@ char* getWordFromDictionary() {
 	dict = fopen("assets/dictionary.txt", "r");
 	int index = rand() % numberOfWords;
 	char* buff = (char*) malloc(45);
-	while(--index) fscanf(dict, "%s", buff);
-	fscanf(dict, "%s", buff);
+	while(index--) fscanf(dict, "%s", buff);
 	fclose(dict);
 	return buff;
 }
@@ -57,6 +56,11 @@ bool correctGuess(char* guess, char* answer) {
 	return false;
 }
 
+void clearPreviousLine() {
+	printf("\x1b[1F"); // Move to beginning of previous line
+	printf("\x1b[2K"); // Clear entire line
+}
+
 void playGame(char* answer) {
 	capitalise(answer);
 	int l = strlen(answer);
@@ -65,7 +69,7 @@ void playGame(char* answer) {
 	capitalise(guess);
 	fflush(stdin);
 	while(!correctGuess(guess, answer)) {
-		for(int i = 0; i < l; i++) printf("\b");
+		clearPreviousLine();
 		for(int i = 0; i < l; i++) {
 			char s[2];
 			s[0] = guess[i];
@@ -79,6 +83,6 @@ void playGame(char* answer) {
 		capitalise(guess);
 		fflush(stdin);
 	}
-	for(int i = 0; i < l; i++) printf("\b");
+	clearPreviousLine();
 	printf("%s\nYou have guessed the word correctly!\n", answer);
 }
