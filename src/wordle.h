@@ -11,10 +11,14 @@ typedef enum {white, black, green, yellow} Color;
 
 void print(char* s, Color color);
 void capitalise(char* s);
-char* getWordFromDictionary();
+void clearPreviousLine();
+
+char* getRandomWordFromDictionary();
+void sortAndRemoveDuplicates();
+
 bool isInWord(char a, char* answer);
 bool correctGuess(char* guess, char* answer);
-void clearPreviousLine();
+void evaluateGuess(char* guess, char* answer);
 void playGame(char* answer);
 
 #endif

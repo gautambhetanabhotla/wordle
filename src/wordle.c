@@ -19,30 +19,6 @@ void capitalise(char* s) {
 	}
 }
 
-char* getWordFromDictionary() {
-	srand(time(0));
-	FILE* dict = fopen("assets/dictionary.txt", "r");
-	int numberOfWords = 0;
-	if(dict == NULL) {
-		printf("Dictionary not found\n");
-		return NULL;
-	}
-	//getting number of words in dictionary
-	char c = fgetc(dict);
-	while(!feof(dict)) {
-		if(c == '\n') numberOfWords++;
-		c = fgetc(dict);
-	}
-	fclose(dict);
-	//selecting a random word from dictionary
-	dict = fopen("assets/dictionary.txt", "r");
-	int index = rand() % numberOfWords;
-	char* buff = (char*) malloc(45);
-	while(index--) fscanf(dict, "%s", buff);
-	fclose(dict);
-	return buff;
-}
-
 bool isInWord(char a, char* answer) {
 	//checks if the character 'a' is in the word 'answer'.
 	for(int i = 0; i < strlen(answer); i++) {
@@ -61,16 +37,8 @@ void clearPreviousLine() {
 	printf("\x1b[2K"); // Clear entire line
 }
 
-void playGame(char* answer) {
-	capitalise(answer);
-	int l = strlen(answer);
-	char guess[l + 1];
-	scanf("%s", guess);
-	capitalise(guess);
-	fflush(stdin);
-	while(!correctGuess(guess, answer)) {
-		clearPreviousLine();
-		for(int i = 0; i < l; i++) {
+void evaluateGuess(char* guess, char* answer) {
+	for(int i = 0; i < strlen(answer); i++) {
 			char s[2];
 			s[0] = guess[i];
 			s[1] = '\0'; //appending null character to a single character to be able to pass it into the print() function
@@ -78,11 +46,34 @@ void playGame(char* answer) {
 			else if(isInWord(guess[i], answer)) print(s, yellow);
 			else print(s, white);
 		}
+}
+
+void playGame(char* answer) {
+	capitalise(answer);
+	int l = strlen(answer);
+	char guess[l + 1];
+	/*
+	scanf("%s", guess);
+	capitalise(guess);
+	fflush(stdin);
+	while(!correctGuess(guess, answer)) {
+		clearPreviousLine();
+		evaluateGuess(guess, answer);
 		printf("\n");
 		scanf("%s", guess);
 		capitalise(guess);
 		fflush(stdin);
 	}
+	*/
+	do {
+		scanf("%s", guess);
+		capitalise(guess);
+		fflush(stdin);
+		clearPreviousLine();
+		evaluateGuess(guess, answer);
+		printf("\n");
+	} while(!correctGuess(guess, answer));
 	clearPreviousLine();
-	printf("%s\nYou have guessed the word correctly!\n", answer);
+	print(answer, green);
+	printf("\nYou have guessed the word correctly!\n");
 }
