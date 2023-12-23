@@ -48,27 +48,23 @@ void evaluateGuess(char* guess, char* answer) {
 		}
 }
 
+void getGuess(char* guess, char* answer) {
+	scanf("%s", guess);
+	if(strlen(guess) != strlen(answer)) {
+		printf("Your guess must be %d characters long.\n", (int)strlen(answer));
+		getGuess(guess, answer);
+	}
+	capitalise(guess);
+	fflush(stdin);
+}
+
 void playGame(char* answer) {
 	capitalise(answer);
 	int l = strlen(answer);
-	char guess[l + 1];
-	/*
-	scanf("%s", guess);
-	capitalise(guess);
-	fflush(stdin);
-	while(!correctGuess(guess, answer)) {
-		clearPreviousLine();
-		evaluateGuess(guess, answer);
-		printf("\n");
-		scanf("%s", guess);
-		capitalise(guess);
-		fflush(stdin);
-	}
-	*/
+	printf("The word is %d characters long.\n", l);
+	char guess[46];
 	do {
-		scanf("%s", guess);
-		capitalise(guess);
-		fflush(stdin);
+		getGuess(guess, answer);
 		clearPreviousLine();
 		evaluateGuess(guess, answer);
 		printf("\n");
