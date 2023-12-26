@@ -48,6 +48,20 @@ void evaluateGuess(char* guess, char* answer) {
 		}
 }
 
+void evaluateGuessUpdated(char* guess, char* answer) {
+	int occurences[26];
+	for(int i = 0; i < 26; i++) occurences[i] = 0;
+	for(int i = 0; i < strlen(answer); i++) occurences[answer[i] - 'A']++;
+	for(int i = 0; i < strlen(answer); i++) {
+		char s[2];
+		s[0] = guess[i]; s[1] = '\0';
+		if(guess[i] == answer[i] && occurences[guess[i] - 'A'] > 0) print(s, green);
+		else if(occurences[guess[i] - 'A'] > 0) print(s, yellow);
+		else print(s, white);
+		occurences[guess[i] - 'A']--;
+	}
+}
+
 void getGuess(char* guess, char* answer) {
 	scanf("%s", guess);
 	if(strlen(guess) != strlen(answer)) {
@@ -66,7 +80,7 @@ void playGame(char* answer) {
 	do {
 		getGuess(guess, answer);
 		clearPreviousLine();
-		evaluateGuess(guess, answer);
+		evaluateGuessUpdated(guess, answer);
 		printf("\n");
 	} while(!correctGuess(guess, answer));
 	clearPreviousLine();
